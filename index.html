@@ -5,7 +5,7 @@
   <title>Free! 2048</title>
 
   <link href="style/main.css" rel="stylesheet" type="text/css">
-  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon 2.ico">
   <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
   <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone 5+ -->
   <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x920.png"  media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone, retina -->
@@ -15,6 +15,38 @@
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+
+  <script src="music/audiojs/jquery.js"></script>
+  <script src="music/audiojs/audio.js"></script>
+  <script>
+    $(function() { 
+        // Setup the player to autoplay the next track
+        var a = audiojs.createAll({
+          trackEnded: function() {
+            var next = $('ol li.playing').next();
+            if (!next.length) next = $('ol li').first();
+            next.addClass('playing').siblings().removeClass('playing');
+            audio.load($('a', next).attr('data-src'));
+            audio.play();
+          }
+        });
+        
+        // Load in the first track
+        var audio = a[0];
+            first = $('ol a').attr('data-src');
+        $('ol li').first().addClass('playing');
+        audio.load(first);
+
+        // Load in a track on click
+        $('ol li').click(function(e) {
+          e.preventDefault();
+          $(this).addClass('playing').siblings().removeClass('playing');
+          audio.load($('a', this).attr('data-src'));
+          audio.play();
+        });
+      });
+  </script>
+
 </head>
 <body>
   <div class="container">
@@ -72,6 +104,7 @@
       </div>
     </div>
 
+    <div class="writing">
     <p class="game-explanation">
       <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
     </p>
@@ -79,6 +112,16 @@
     <p>
     Deviation of 2048 created by <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/" target="_blank">Threes by Asher Vollmer.</a>
     </p>
+    </div>
+  </div>
+
+  <div id="music">
+    <audio preload, autoplay></audio>
+      <ol>
+        <li><a href="#" data-src="music/Dried Up Youthful Fame.mp3">Dried Up Youthful Fame by Oldcodex</a></li>
+        <li><a href="#" data-src="music/Future Fish.mp3">Future Fish by Style Five</a></li>
+        <li><a href="#" data-src="music/Rage On.mp3">Rage on by Oldcodex</a></li>
+        <li><a href="#" data-src="music/Splash Free.mp3">Splash Free by Style Five</a></li>
   </div>
 
   <script src="js/bind_polyfill.js"></script>
